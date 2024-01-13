@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponse
 from .models import Post,Comment
 from django.contrib import messages
 from django.urls import reverse
-
+from .forms import PostForm
 # Create your views here.
 def blogHome(request):
     allpost = Post.objects.all()
@@ -33,3 +33,19 @@ def postComment(request):
         else:
             messages.error(request,"Create or  Log-in to a Account to post a comment")
     return redirect(f'/blog/{post.slug}')
+
+def postblog(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+           post = form.save(commit=False)
+           post.author = request.user
+           post.slug = post.title.replace(" ","-").lower()
+           post.save()
+           messages.success(request,"Your post has been posted successfully")
+           return redirect('blogHome')
+        else:
+            messages.error(request,"Unable to post your Blog")
+    else:
+        form = PostForm()
+    return render(request,'blog/postblog.html',{'form':form})

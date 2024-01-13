@@ -10,7 +10,7 @@
             <strong class="d-inline-block mb-2 text-primary-emphasis">Blog by {{post.author}}</strong>
             <h3 class="mb-0">{{post.title}}</h3>
             <div class="mb-1 text-muted">{{post.timestamp}}</div>
-            <p class="card-text mb-auto">{{post.content | truncatechars:50}}</p>
+            <p class="card-text mb-auto">{{post.content |safe| truncatechars:50}}</p>
             <a href="{{post.slug}}"  role="button" class="btn btn-primary my-2">Continue reading</a>
           </div>
         </div>
